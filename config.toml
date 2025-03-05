@@ -1,0 +1,14 @@
+[aws]
+endpoint_url = "http://localhost:5005"
+region_name = "ap-northeast-1"
+use_ssl = false
+aws_access_key_id = "dummy"
+aws_secret_access_key = "dummy"
+
+[dynamodb]
+table_name = "invoices_and_bills"
+
+[data]
+num_of_invoices = 5000
+num_of_bills = 5000
+num_of_associations = 10000
