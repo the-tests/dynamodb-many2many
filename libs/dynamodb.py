@@ -127,8 +127,8 @@ async def add_association(table, a: str, b: str) -> None:
         for association in ((a, b), (b, a)):
             await batch.put_item(
                 Item={
-                    'primary_key': association[0],
-                    'sort_key': association[1],
+                    PARTITION_KEY_NAME: association[0],
+                    SORT_KEY_NAME: association[1],
                     'created_at': int(dt.now().timestamp()),
                 },
             )
@@ -140,12 +140,12 @@ async def get_items(table, partition_key: str, sort_key: str | None = None) -> d
     # how to get relations for both Invoices in one query
     if sort_key is None:
         res = await table.query(
-            KeyConditionExpression=Key('primary_key').eq(partition_key),
+            KeyConditionExpression=Key(PARTITION_KEY_NAME).eq(partition_key),
             ReturnConsumedCapacity='TOTAL',
         )
     else:
-        condition_1 = Key('primary_key').eq(partition_key)
-        condition_2 = Key('sort_key').eq(sort_key)
+        condition_1 = Key(PARTITION_KEY_NAME).eq(partition_key)
+        condition_2 = Key(SORT_KEY_NAME).eq(sort_key)
         res = await table.query(
             KeyConditionExpression=(condition_1 & condition_2),
             ReturnConsumedCapacity='TOTAL',
